@@ -1,4 +1,4 @@
-const connection = require("connection.js");
+const connection = require("./connection");
 
 const selectAll = () => {
   return new Promise((resolve, reject) => {

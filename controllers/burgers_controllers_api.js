@@ -1,7 +1,9 @@
 const express = require("express");
-const { selectAllSQLReq, insertOneSQLReq, updateOneSQLReq } = requre(
-  "../models/burger.js"
-);
+const {
+  selectAllSQLReq,
+  insertOneSQLReq,
+  updateOneSQLReq,
+} = require("../models/burger.js");
 const router = express.Router();
 
 router.get("/api/all", (req, res) => {
