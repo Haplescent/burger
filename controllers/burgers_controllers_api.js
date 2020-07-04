@@ -8,14 +8,12 @@ const router = express.Router();
 
 router.get("/api/all", async (req, res) => {
   const data = await selectAllSQLReq();
-  console.log(data);
   res.send(data);
 });
 
-router.get("/api/add", async (req, res) => {
-  insertOneSQLReq().then((file) => {
-    res.send(file);
-  });
+router.post("/api/add", async (req, res) => {
+  insertOneSQLReq(req.body.burgerName);
+  res.json(req.body.burgerName);
 });
 
 router.get("/api/update/", async (req, res) => {

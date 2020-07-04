@@ -7,9 +7,9 @@ const selectAllSQLReq = () => {
   });
 };
 
-const insertOneSQLReq = () => {
+const insertOneSQLReq = (burgerName) => {
   return new Promise((resolve, reject) => {
-    const response = insertOne();
+    const response = insertOne(burgerName);
     resolve(response);
   });
 };

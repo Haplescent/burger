@@ -1,18 +1,5 @@
 const connection = require("./connection");
 
-// const useDatabase = () => {
-//   return new Promise((resolve, reject) => {
-//     connection.query(
-//       `
-//     SELECT * FROM burgers;
-//     `,
-//       (err, data) => {
-//         err ? reject(err) : resolve(data);
-//       }
-//     );
-//   });
-// };
-
 const selectAll = () => {
   return new Promise((resolve, reject) => {
     connection.query(
@@ -35,7 +22,7 @@ const insertOne = (burgerName) => {
     `,
       [burgerName],
       (err, data) => {
-        err ? reject(err) : resolve(data);
+        err ? reject(err) : resolve();
       }
     );
   });

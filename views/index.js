@@ -1,5 +1,3 @@
-"use strict";
-
 const LikeButton = (props) => {
   const id = props.id;
   const [liked, setLike] = React.useState(0);
@@ -23,7 +21,6 @@ const LikeButton = (props) => {
 };
 
 const Example = () => {
-  const [count, setCount] = React.useState(0);
   const [burgerData, setBurgerData] = React.useState([]);
   const listItems = burgerData.map((burger) => (
     <li>
@@ -32,15 +29,10 @@ const Example = () => {
     </li>
   ));
 
-  // Similar to componentDidMount and componentDidUpdate:
   React.useEffect(() => {
-    // Update the document title using the browser API
-    document.title = `You clicked ${count} times`;
     axios
       .get("/api/all")
       .then((response) => {
-        // handle success
-        console.log(response);
         setBurgerData(response.data);
       })
       .catch((error) => console.log(error));
@@ -48,17 +40,64 @@ const Example = () => {
 
   return (
     <div>
-      <p>You clicked {count} times</p>
-      <button onClick={() => setCount(count + 1)}>Click me</button>
       <ul>{listItems}</ul>
     </div>
   );
 };
 
+class BurgerForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { value: "" };
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleChange(event) {
+    this.setState({ value: event.target.value });
+  }
+
+  async handleSubmit(event) {
+    alert("A name was submitted: " + this.state.value);
+    event.preventDefault();
+    await axios
+      .post("/api/add", {
+        burgerName: this.state.value,
+      })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    this.setState({ value: "" });
+  }
+
+  render() {
+    return (
+      <div>
+        <form onSubmit={this.handleSubmit}>
+          <label>
+            Name:
+            <input
+              type="text"
+              value={this.state.value}
+              onChange={this.handleChange}
+            />
+          </label>
+          <input type="submit" value="Submit" />
+        </form>
+        <Example />
+      </div>
+    );
+  }
+}
+
 const domContainer = document.querySelector("#like_button_container");
 ReactDOM.render(
   <div>
-    <Example />
+    <BurgerForm />
   </div>,
   domContainer
 );
