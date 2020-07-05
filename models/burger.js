@@ -14,9 +14,9 @@ const insertOneSQLReq = (burgerName) => {
   });
 };
 
-const updateOneSQLReq = () => {
+const updateOneSQLReq = (devoured, id) => {
   return new Promise((resolve, reject) => {
-    const response = updateOne();
+    const response = updateOne(devoured, id);
     resolve(response);
   });
 };

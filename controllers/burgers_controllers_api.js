@@ -16,9 +16,9 @@ router.post("/api/add", async (req, res) => {
   res.json(req.body.burgerName);
 });
 
-router.get("/api/update/", async (req, res) => {
-  selectAllSQLReq().then((file) => {
-    res.send(file);
+router.post("/api/update/", async (req, res) => {
+  updateOneSQLReq(req.body.devoured, req.body.id).then(() => {
+    res.json(req.body.id);
   });
 });
 

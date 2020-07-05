@@ -28,16 +28,15 @@ const insertOne = (burgerName) => {
   });
 };
 
-const updateOne = (burgerName, devoured) => {
+const updateOne = (devoured, id) => {
   return new Promise((resolve, reject) => {
     connection.query(
       `
         UPDATE burgers
-        SET burger_name = ?,
-        devoured = ?
+        SET devoured = ?
         WHERE id = ?;
         `,
-      [burgerName, devoured],
+      [devoured, id],
       (err, data) => {
         err ? reject(err) : resolve(data);
       }

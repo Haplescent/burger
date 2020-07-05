@@ -2,6 +2,22 @@ const LikeButton = (props) => {
   const id = props.id;
   const [liked, setLike] = React.useState(0);
 
+  const handleLike = async (DevourId) => {
+    console.log(`you hit like ${DevourId}`);
+    await axios
+      .post("/api/update", {
+        devoured: true,
+        id: DevourId + 1,
+      })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    this.setLike(true);
+  };
+
   React.useEffect(() => {
     // Update the document title using the browser API
     axios
@@ -16,7 +32,7 @@ const LikeButton = (props) => {
   if (liked) {
     return <p>You liked this.</p>;
   } else {
-    return <button onClick={() => setLike(true)}>Like</button>;
+    return <button onClick={() => handleLike(id)}>Like</button>;
   }
 };
 
