@@ -1,8 +1,8 @@
-const LikeButton = (props) => {
+const DevourButton = (props) => {
   const id = props.id;
-  const [liked, setLike] = React.useState(0);
+  const [devoured, setDevour] = React.useState(0);
 
-  const handleLike = async (DevourId) => {
+  const handleDevour = async (DevourId) => {
     console.log(`you hit like ${DevourId}`);
     await axios
       .post("/api/update", {
@@ -15,7 +15,7 @@ const LikeButton = (props) => {
       .catch(function (error) {
         console.log(error);
       });
-    this.setLike(true);
+    this.setDevour(true);
   };
 
   React.useEffect(() => {
@@ -24,23 +24,23 @@ const LikeButton = (props) => {
       .get("/api/all")
       .then((response) => {
         // handle success
-        setLike(response.data[id].devoured);
+        setDevour(response.data[id].devoured);
       })
       .catch((error) => console.log(error));
-  }, liked);
+  }, devoured);
 
-  if (liked) {
-    return <p>You liked this.</p>;
+  if (devoured) {
+    return <p>You devoured this.</p>;
   } else {
-    return <button onClick={() => handleLike(id)}>Like</button>;
+    return <button onClick={() => handleDevour(id)}>Devour</button>;
   }
 };
 
-const Example = () => {
+const BurgerList = () => {
   const [burgerData, setBurgerData] = React.useState([]);
   const listItems = burgerData.map((burger) => (
     <li>
-      <LikeButton id={parseInt(burger.id) - 1} />
+      <DevourButton id={parseInt(burger.id) - 1} />
       {burger.burger_name}
     </li>
   ));
@@ -61,25 +61,19 @@ const Example = () => {
   );
 };
 
-class BurgerForm extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { value: "" };
+const BurgerForm = () => {
+  const [value, setValue] = React.useState("");
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
+  const handleChange = (event) => {
+    setValue(event.target.value);
+  };
 
-  handleChange(event) {
-    this.setState({ value: event.target.value });
-  }
-
-  async handleSubmit(event) {
-    alert("A name was submitted: " + this.state.value);
+  const handleSubmit = async (event) => {
+    alert("A name was submitted: " + value);
     event.preventDefault();
     await axios
       .post("/api/add", {
-        burgerName: this.state.value,
+        burgerName: value,
       })
       .then(function (response) {
         console.log(response);
@@ -87,28 +81,22 @@ class BurgerForm extends React.Component {
       .catch(function (error) {
         console.log(error);
       });
-    this.setState({ value: "" });
-  }
+    setValue("");
+  };
 
-  render() {
-    return (
-      <div>
-        <form onSubmit={this.handleSubmit}>
-          <label>
-            Name:
-            <input
-              type="text"
-              value={this.state.value}
-              onChange={this.handleChange}
-            />
-          </label>
-          <input type="submit" value="Submit" />
-        </form>
-        <Example />
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      <form onSubmit={handleSubmit}>
+        <label>
+          Name:
+          <input type="text" value={value} onChange={handleChange} />
+        </label>
+        <input type="submit" value="Submit" />
+      </form>
+      <BurgerList />
+    </div>
+  );
+};
 
 const domContainer = document.querySelector("#like_button_container");
 ReactDOM.render(
