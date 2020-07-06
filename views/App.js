@@ -1,20 +1,4 @@
-const {
-  colors,
-  CssBaseline,
-  ThemeProvider,
-  Typography,
-  Container,
-  makeStyles,
-  createMuiTheme,
-  Box,
-  SvgIcon,
-  Link,
-  Input,
-  InputLabel,
-  Button,
-  List,
-  ListItem,
-} = MaterialUI;
+const { SvgIcon, Input, InputLabel, Button, List, ListItem } = MaterialUI;
 
 const BurgerList = (props) => {
   const burgerComponentArray = props.burgerComponentArray;
