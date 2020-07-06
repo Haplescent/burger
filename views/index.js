@@ -11,124 +11,89 @@ const {
   Link,
 } = MaterialUI;
 
-const BurgerList = (props) => {
-  const burgerComponentArray = props.burgerComponentArray;
-  console.log(burgerComponentArray);
-  const listItems = burgerComponentArray.map((burger) => <li>{burger}</li>);
+// Create a theme instance.
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: "#556cd6",
+    },
+    secondary: {
+      main: "#19857b",
+    },
+    error: {
+      main: colors.red.A400,
+    },
+    background: {
+      default: "#fff",
+    },
+  },
+});
+
+function LightBulbIcon(props) {
   return (
-    <div>
-      <ul>{listItems}</ul>
-    </div>
+    <SvgIcon {...props}>
+      <path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7zm2.85 11.1l-.85.6V16h-4v-2.3l-.85-.6C7.8 12.16 7 10.63 7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.63-.8 3.16-2.15 4.1z" />
+    </SvgIcon>
   );
-};
+}
 
-const BurgerForm = (props) => {
-  const [value, setValue] = React.useState("");
+const useStyles = makeStyles((theme) => ({
+  root: {
+    margin: theme.spacing(6, 0, 3),
+  },
+  lightBulb: {
+    verticalAlign: "middle",
+    marginRight: theme.spacing(1),
+  },
+}));
 
-  const handleChange = (event) => {
-    setValue(event.target.value);
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    props.handleEntry(value);
-    setValue("");
-  };
-
+function ProTip() {
+  const classes = useStyles();
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Name:
-          <input type="text" value={value} onChange={handleChange} />
-        </label>
-        <input type="submit" value="Submit" />
-      </form>
-    </div>
+    <Typography className={classes.root} color="textSecondary">
+      <LightBulbIcon className={classes.lightBulb} />
+      Pro tip: See more{" "}
+      <Link href="https://material-ui.com/getting-started/templates/">
+        templates
+      </Link>{" "}
+      on the Material-UI documentation.
+    </Typography>
   );
-};
+}
 
-const App = () => {
-  const [burgerData, setBurgerData] = React.useState([]);
-  const [loadNewData, setLoading] = React.useState(true);
-
-  const handleDevour = async (DevourId) => {
-    console.log(`you hit like ${DevourId}`);
-    await axios
-      .post("/api/update", {
-        devoured: 1,
-        id: DevourId,
-      })
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-    setLoading(true);
-  };
-
-  const handleEntry = async (submitValue) => {
-    console.log(submitValue);
-    await axios
-      .post("/api/add", {
-        burgerName: submitValue,
-      })
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-    setLoading(true);
-  };
-
-  const DevourButton = (props) => {
-    const id = props.burger.id;
-    const devoured = props.burger.devoured;
-    const burgerName = props.burger.burger_name;
-
-    if (devoured) {
-      return <p>You devoured this.</p>;
-    } else {
-      return (
-        <button onClick={() => props.handleClick(id)}>
-          Devour {burgerName}
-        </button>
-      );
-    }
-  };
-
-  React.useEffect(() => {
-    if (loadNewData) {
-      axios
-        .get("/api/all")
-        .then((response) => {
-          setBurgerData(response.data);
-          console.log("react useEffect ran");
-          console.log(response.data);
-        })
-        .catch((error) => console.log(error));
-      setLoading(false);
-    }
-  });
-
-  const burgerArray = burgerData.map((burger) => (
-    <DevourButton burger={burger} handleClick={handleDevour} />
-  ));
-
+function Copyright() {
   return (
-    <div>
-      <BurgerForm handleEntry={handleEntry} />
-      <BurgerList burgerComponentArray={burgerArray} />
-    </div>
+    <Typography variant="body2" color="textSecondary" align="center">
+      {"Copyright © "}
+      <Link color="inherit" href="https://material-ui.com/">
+        Your Website
+      </Link>{" "}
+      {new Date().getFullYear()}
+      {"."}
+    </Typography>
   );
-};
+}
 
-const domContainer = document.querySelector("#root");
+function WithStyles() {
+  return (
+    <Container maxWidth="sm">
+      <div style={{ marginTop: 24 }}>
+        <Typography variant="h4" component="h1" gutterBottom>
+          CDN v4-beta example
+        </Typography>
+        <ProTip />
+        <App />
+        <Copyright />
+      </div>
+    </Container>
+  );
+}
+
 ReactDOM.render(
-  <div>
-    <App />
-  </div>,
-  domContainer
+  <ThemeProvider theme={theme}>
+    {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+    <CssBaseline />
+    <WithStyles />
+  </ThemeProvider>,
+  document.querySelector("#root")
 );
