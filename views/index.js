@@ -1,3 +1,16 @@
+const {
+  colors,
+  CssBaseline,
+  ThemeProvider,
+  Typography,
+  Container,
+  makeStyles,
+  createMuiTheme,
+  Box,
+  SvgIcon,
+  Link,
+} = MaterialUI;
+
 const BurgerList = (props) => {
   const burgerComponentArray = props.burgerComponentArray;
   console.log(burgerComponentArray);
@@ -17,7 +30,6 @@ const BurgerForm = (props) => {
   };
 
   const handleSubmit = (event) => {
-    alert("A name was submitted: " + value);
     event.preventDefault();
     props.handleEntry(value);
     setValue("");
@@ -53,12 +65,6 @@ const App = () => {
       .catch(function (error) {
         console.log(error);
       });
-
-    // const ArrayIndex = parseInt(DevourId) - 1;
-    // console.log(burgerData);
-    // console.log(ArrayIndex);
-    // burgerData[ArrayIndex].devoured = 1;
-    // setBurgerData();
     setLoading(true);
   };
 
@@ -74,10 +80,6 @@ const App = () => {
       .catch(function (error) {
         console.log(error);
       });
-    // let len = burgerData.length();
-    // burgerData.push({ id: len + 1, burger_name: submitValue, devoured: 0 });
-    // console.log(burgerData);
-    // setBurgerData();
     setLoading(true);
   };
 
@@ -123,7 +125,7 @@ const App = () => {
   );
 };
 
-const domContainer = document.querySelector("#like_button_container");
+const domContainer = document.querySelector("#root");
 ReactDOM.render(
   <div>
     <App />
