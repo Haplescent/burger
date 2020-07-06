@@ -1,5 +1,6 @@
 const BurgerList = (props) => {
   const burgerComponentArray = props.burgerComponentArray;
+  console.log(burgerComponentArray);
   const listItems = burgerComponentArray.map((burger) => <li>{burger}</li>);
   return (
     <div>
@@ -8,8 +9,36 @@ const BurgerList = (props) => {
   );
 };
 
+const BurgerForm = (props) => {
+  const [value, setValue] = React.useState("");
+
+  const handleChange = (event) => {
+    setValue(event.target.value);
+  };
+
+  const handleSubmit = (event) => {
+    alert("A name was submitted: " + value);
+    event.preventDefault();
+    props.handleEntry(value);
+    setValue("");
+  };
+
+  return (
+    <div>
+      <form onSubmit={handleSubmit}>
+        <label>
+          Name:
+          <input type="text" value={value} onChange={handleChange} />
+        </label>
+        <input type="submit" value="Submit" />
+      </form>
+    </div>
+  );
+};
+
 const App = () => {
   const [burgerData, setBurgerData] = React.useState([]);
+  const [loadNewData, setLoading] = React.useState(true);
 
   const handleDevour = async (DevourId) => {
     console.log(`you hit like ${DevourId}`);
@@ -25,11 +54,31 @@ const App = () => {
         console.log(error);
       });
 
-    const ArrayIndex = parseInt(DevourId) - 1;
-    console.log(burgerData);
-    console.log(ArrayIndex);
-    burgerData[ArrayIndex].devoured = 1;
-    setBurgerData(burgerData);
+    // const ArrayIndex = parseInt(DevourId) - 1;
+    // console.log(burgerData);
+    // console.log(ArrayIndex);
+    // burgerData[ArrayIndex].devoured = 1;
+    // setBurgerData();
+    setLoading(true);
+  };
+
+  const handleEntry = async (submitValue) => {
+    console.log(submitValue);
+    await axios
+      .post("/api/add", {
+        burgerName: submitValue,
+      })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    // let len = burgerData.length();
+    // burgerData.push({ id: len + 1, burger_name: submitValue, devoured: 0 });
+    // console.log(burgerData);
+    // setBurgerData();
+    setLoading(true);
   };
 
   const DevourButton = (props) => {
@@ -49,122 +98,30 @@ const App = () => {
   };
 
   React.useEffect(() => {
-    axios
-      .get("/api/all")
-      .then((response) => {
-        setBurgerData(response.data);
-        console.log("react useEffect ran");
-        console.log(response.data);
-      })
-      .catch((error) => console.log(error));
-  }, burgerData);
+    if (loadNewData) {
+      axios
+        .get("/api/all")
+        .then((response) => {
+          setBurgerData(response.data);
+          console.log("react useEffect ran");
+          console.log(response.data);
+        })
+        .catch((error) => console.log(error));
+      setLoading(false);
+    }
+  });
 
   const burgerArray = burgerData.map((burger) => (
     <DevourButton burger={burger} handleClick={handleDevour} />
   ));
 
-  return <BurgerList burgerComponentArray={burgerArray} />;
+  return (
+    <div>
+      <BurgerForm handleEntry={handleEntry} />
+      <BurgerList burgerComponentArray={burgerArray} />
+    </div>
+  );
 };
-
-// const DevourButton = (props) => {
-//   const id = props.id;
-//   const [devoured, setDevour] = React.useState(0);
-
-//   const handleDevour = async (DevourId) => {
-//     console.log(`you hit like ${DevourId}`);
-//     await axios
-//       .post("/api/update", {
-//         devoured: true,
-//         id: DevourId + 1,
-//       })
-//       .then(function (response) {
-//         console.log(response);
-//       })
-//       .catch(function (error) {
-//         console.log(error);
-//       });
-//     this.setDevour(true);
-//   };
-
-//   React.useEffect(() => {
-//     // Update the document title using the browser API
-//     axios
-//       .get("/api/all")
-//       .then((response) => {
-//         // handle success
-//         setDevour(response.data[id].devoured);
-//       })
-//       .catch((error) => console.log(error));
-//   }, devoured);
-
-//   if (devoured) {
-//     return <p>You devoured this.</p>;
-//   } else {
-//     return <button onClick={() => handleDevour(id)}>Devour</button>;
-//   }
-// };
-
-// const BurgerList = () => {
-//   const [burgerData, setBurgerData] = React.useState([]);
-//   const listItems = burgerData.map((burger) => (
-//     <li>
-//       <DevourButton id={parseInt(burger.id) - 1} />
-//       {burger.burger_name}
-//     </li>
-//   ));
-
-//   React.useEffect(() => {
-//     axios
-//       .get("/api/all")
-//       .then((response) => {
-//         setBurgerData(response.data);
-//       })
-//       .catch((error) => console.log(error));
-//   }, burgerData);
-
-//   return (
-//     <div>
-//       <ul>{listItems}</ul>
-//     </div>
-//   );
-// };
-
-// const BurgerForm = () => {
-//   const [value, setValue] = React.useState("");
-
-//   const handleChange = (event) => {
-//     setValue(event.target.value);
-//   };
-
-//   const handleSubmit = async (event) => {
-//     alert("A name was submitted: " + value);
-//     event.preventDefault();
-//     await axios
-//       .post("/api/add", {
-//         burgerName: value,
-//       })
-//       .then(function (response) {
-//         console.log(response);
-//       })
-//       .catch(function (error) {
-//         console.log(error);
-//       });
-//     setValue("");
-//   };
-
-//   return (
-//     <div>
-//       <form onSubmit={handleSubmit}>
-//         <label>
-//           Name:
-//           <input type="text" value={value} onChange={handleChange} />
-//         </label>
-//         <input type="submit" value="Submit" />
-//       </form>
-//       <BurgerList />
-//     </div>
-//   );
-// };
 
 const domContainer = document.querySelector("#like_button_container");
 ReactDOM.render(
