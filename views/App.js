@@ -1,3 +1,16 @@
+const {
+  colors,
+  CssBaseline,
+  ThemeProvider,
+  Typography,
+  Container,
+  makeStyles,
+  createMuiTheme,
+  Box,
+  SvgIcon,
+  Link,
+} = MaterialUI;
+
 const BurgerList = (props) => {
   const burgerComponentArray = props.burgerComponentArray;
   console.log(burgerComponentArray);
@@ -106,8 +119,14 @@ const App = () => {
 
   return (
     <div>
+      <Typography variant="h4" component="h1" gutterBottom>
+        App.js Begin
+      </Typography>
       <BurgerForm handleEntry={handleEntry} />
       <BurgerList burgerComponentArray={burgerArray} />
+      <Typography variant="h4" component="h1" gutterBottom>
+        App.js End
+      </Typography>
     </div>
   );
 };
