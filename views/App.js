@@ -9,15 +9,22 @@ const {
   Box,
   SvgIcon,
   Link,
+  Input,
+  InputLabel,
+  Button,
+  List,
+  ListItem,
 } = MaterialUI;
 
 const BurgerList = (props) => {
   const burgerComponentArray = props.burgerComponentArray;
   console.log(burgerComponentArray);
-  const listItems = burgerComponentArray.map((burger) => <li>{burger}</li>);
+  const listItems = burgerComponentArray.map((burger) => (
+    <ListItem>{burger}</ListItem>
+  ));
   return (
     <div>
-      <ul>{listItems}</ul>
+      <List>{listItems}</List>
     </div>
   );
 };
@@ -38,11 +45,11 @@ const BurgerForm = (props) => {
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <label>
+        <InputLabel>
           Name:
-          <input type="text" value={value} onChange={handleChange} />
-        </label>
-        <input type="submit" value="Submit" />
+          <Input type="text" value={value} onChange={handleChange} />
+          <Input type="submit" value="Submit" />
+        </InputLabel>
       </form>
     </div>
   );
@@ -89,12 +96,12 @@ const App = () => {
     const burgerName = props.burger.burger_name;
 
     if (devoured) {
-      return <p>You devoured this.</p>;
+      return <p>You devoured {burgerName}</p>;
     } else {
       return (
-        <button onClick={() => props.handleClick(id)}>
+        <Button onClick={() => props.handleClick(id)}>
           Devour {burgerName}
-        </button>
+        </Button>
       );
     }
   };
@@ -119,14 +126,8 @@ const App = () => {
 
   return (
     <div>
-      <Typography variant="h4" component="h1" gutterBottom>
-        App.js Begin
-      </Typography>
       <BurgerForm handleEntry={handleEntry} />
       <BurgerList burgerComponentArray={burgerArray} />
-      <Typography variant="h4" component="h1" gutterBottom>
-        App.js End
-      </Typography>
     </div>
   );
 };
