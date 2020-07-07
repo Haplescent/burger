@@ -98,11 +98,7 @@ function ProTip() {
   return (
     <Typography className={classes.root} color="textSecondary">
       <LightBulbIcon className={classes.lightBulb} />
-      Pro tip: See more{" "}
-      <Link href="https://material-ui.com/getting-started/templates/">
-        templates
-      </Link>{" "}
-      on the Material-UI documentation.
+      Pro tip: Add burgers to the database by pressing submit
     </Typography>
   );
 }
@@ -112,7 +108,7 @@ function Copyright() {
     <Typography variant="body2" color="textSecondary" align="center">
       {"Copyright © "}
       <Link color="inherit" href="https://material-ui.com/">
-        Your Website
+        John Merritt
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}
