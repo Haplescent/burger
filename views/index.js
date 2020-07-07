@@ -106,7 +106,7 @@ function ProTip() {
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
-      {"Copyright © "}
+      {"By "}
       <Link color="inherit" href="https://material-ui.com/">
         John Merritt
       </Link>{" "}
